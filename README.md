@@ -34,6 +34,11 @@ Este proyecto incluye los siguientes endpoints:
 
 Además, se ha implementado un middleware de autenticación que valida la sesión del usuario en procesos como store, update y delete.
 
-##**Documentación:**
+## Documentación:
 
 [https://app.swaggerhub.com/apis-docs/EDILSONLAVEERDE182/Sophos/0.0.1#/Login/postv1_login](https://)
+
+
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjM1Njc5MDAxNjUsImlhdCI6MTY3NTc0MDE2NSwic3ViIjoxfQ.PDHvGp5JF-owHumjYF2d8U0NjZn7-2Sw1zm_xBB2xFc
+User: edilsonlaverde_182@hotmail.com
+Password: elaverde

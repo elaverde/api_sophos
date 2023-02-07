@@ -28,9 +28,9 @@
     "autoload": {
         "psr-4": {
             "Migrations\\": "database/",
-            "App\\Models\\": "app/models/",
-            "App\\Controllers\\": "app/controllers/",
-            "App\\Middleware\\": "app/middleware/"
+            "App\\Models\\": "app/Models/",
+            "App\\Controllers\\": "app/Controllers/",
+            "App\\Middleware\\": "app/Middleware/"
         }
     },
     "scripts": {
