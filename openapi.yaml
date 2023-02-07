@@ -1,0 +1,251 @@
+openapi: 3.0.0
+info:
+  title: API Usuarios Sophos
+  version: 0.0.1
+paths:
+  v1/login:
+    post:
+      tags:
+        - Login
+      description: Endpoint para login de usuario administrador
+      parameters:
+        - in: body
+          name: body
+          description: Datos esperados para el inicio de sesión
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+                description: Correo electrónico del usuario
+                example: usuario@ejemplo.com
+              password:
+                type: string
+                description: Contraseña del usuario
+                example: 123456
+      responses:
+        200:
+          description: Usuario autenticado con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Token generado para el usuario
+                    example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDMzNzEyMDAsImlhdCI6MTU0MzM3MTIwMCwic3ViIjoiMSJ9.6KLpx2CnWPygvZT97qZnxgBy8UQTjT6jp9Uncl9L-zI
+        401:
+          description: Credenciales inválidas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Invalid credentials
+  v1/users:
+    post:
+      tags:
+        - Crear usuario
+      description: Endpoint para crear un nuevo usuario administrador.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nombre del usuario.
+                  required: true
+                last_name:
+                  type: string
+                  description: Apellido del usuario.
+                  required: true
+                email:
+                  type: string
+                  description: Correo electrónico del usuario.
+                  required: true
+                password:
+                  type: string
+                  description: Contraseña del usuario.
+                  required: true
+      responses:
+        201:
+          description: Usuario creado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Mensaje de éxito.
+                  admin:
+                    type: object
+                    description: Datos del nuevo usuario creado.
+        400:
+          description: Error en la solicitud. Por ejemplo, cuando faltan campos requeridos o la dirección de correo electrónico no es válida.
+        409:
+          description: Error al crear el usuario. Por ejemplo, si ya existe un usuario con esa dirección de correo electrónico.
+      security:
+        - bearerAuth: []
+  v1/user/{id}:
+    put:
+      tags:
+        - Modificar usuario
+      description: Esta función actualiza un usuario existente en la base de datos.
+      parameters:
+        - name: id
+          in: path
+          description: ID del usuario que se desea actualizar
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Datos del usuario que se desea actualizar
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nombre del usuario
+                last_name:
+                  type: string
+                  description: Apellido del usuario
+                email:
+                  type: string
+                  format: email
+                  description: Dirección de correo electrónico del usuario
+                password:
+                  type: string
+                  description: Contraseña del usuario
+                  minimum: 8
+      responses:
+        200:
+          description: Usuario actualizado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID del usuario actualizado
+                  name:
+                    type: string
+                    description: Nombre del usuario actualizado
+                  last_name:
+                    type: string
+                    description: Apellido del usuario actualizado
+                  email:
+                    type: string
+                    format: email
+                    description: Dirección de correo electrónico del usuario actualizado
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Fecha y hora de creación del usuario
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Fecha y hora de la última actualización del usuario
+        400:
+          description: Error en la solicitud. Por ejemplo, cuando faltan campos requeridos o la dirección de correo electrónico no es válida.
+        404:
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Mensaje de error
+        
+        409:
+          description: Error al crear el usuario. Por ejemplo, si ya existe un usuario con esa dirección de correo electrónico.
+      security:
+              - bearerAuth: []
+  v1/users/{id}:
+    delete:
+      tags:
+        - Eliminar usuarios
+      description: Elimina un usuario con un id específico.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id del usuario a eliminar.
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Usuario eliminado con éxito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User deleted successfully
+        404:
+          description: No se encontró el usuario.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+      security:
+        - bearerAuth: []
+  v1/users/{filter}/{search}:
+    get:
+      tags:
+        - Listar usuarios
+      summary: Obtener una lista de usuarios filtrados y buscados por nombre, apellido o correo electrónico
+      parameters:
+        - in: path
+          name: filter
+          schema:
+            type: string
+          description: Filtro por nombre, apellido o correo electrónico.
+        - in: path
+          name: search
+          schema:
+            type: string
+          description: Búsqueda aplicada al filtro.
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  security:
+    - bearerAuth: []
