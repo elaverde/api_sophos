@@ -6,7 +6,7 @@
 # Compiled files
 /composer.lock
 /compiled.php
-
+.env
 # Log files
 /logs
 
