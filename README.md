@@ -36,7 +36,7 @@ Además, se ha implementado un middleware de autenticación que valida la sesió
 
 ## Documentación:
 
-[https://app.swaggerhub.com/apis-docs/EDILSONLAVEERDE182/Sophos/0.0.1#/Login/postv1_login](https://)
+[https://app.swaggerhub.com/apis-docs/EDILSONLAVEERDE182/Sophos/0.0.1#/Login/postv1_login](https://app.swaggerhub.com/apis-docs/EDILSONLAVEERDE182/Sophos/0.0.1#/Login/postv1_login)
 
 
 Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjM1Njc5MDAxNjUsImlhdCI6MTY3NTc0MDE2NSwic3ViIjoxfQ.PDHvGp5JF-owHumjYF2d8U0NjZn7-2Sw1zm_xBB2xFc
