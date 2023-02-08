@@ -33,14 +33,11 @@ class UserController
     }
     private function validateData(array $data): bool
     {
-        if (!isset($data['name']) || !isset($data['last_name']) || !isset($data['email']) || !isset($data['password'])) {
+        if (!isset($data['name']) || !isset($data['last_name']) || !isset($data['email'])) {
             return false;
             
         }
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            return false;
-        }
-        if (strlen($data['password']) < 8) {
             return false;
         }
         return true;
@@ -53,6 +50,9 @@ class UserController
         
         if (!$this->validateData($data)) {
             return $response->withJson(['error' => 'Bad Request'], 400);
+        }
+        if (strlen($data['password']) < 8) {
+            return $response->withJson(['error' => 'Password must be at least 8 characters'], 400);
         }
         $password = password_hash($data['password'], PASSWORD_BCRYPT);
         /**
@@ -111,6 +111,8 @@ class UserController
             'email' => $data['email'],
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
+        //quitamos el password para que no se muestre en el json
+        unset($user->password);
         return $response->withJson($user, 200);
     }
     public function delete(Request $request, Response $response, $args)
