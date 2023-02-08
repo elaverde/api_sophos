@@ -74,7 +74,9 @@ class UserController
             'updated_at' => date('Y-m-d H:i:s'),
             'created_at' => date('Y-m-d H:i:s'),
         ]);
-        
+        //quitamos el password para que no se muestre en el json
+        unset($admin->password);
+
         return $response->withStatus(201)
         ->withJson([
             'message' => 'User created successfully',
@@ -139,6 +141,10 @@ class UserController
                 $query->where('email',  $search);
             }
         })->get();
+        //quitamos el password para que no se muestre en el json
+        foreach ($users as $user) {
+            unset($user->password);
+        }
         return $response->withJson($users, 200);
     }
 }
